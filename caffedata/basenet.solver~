@@ -1,0 +1,14 @@
+net: "basenet.prototxt"
+test_iter: 3714
+test_interval: 13860
+base_lr: 0.001
+lr_policy: "step"
+gamma: 0.98
+stepsize: 13860
+display: 13860
+max_iter: 13860000
+momentum: 0.9
+weight_decay: 0.00005
+snapshot: 1386000
+snapshot_prefix: "snapshot"
+solver_mode: GPU
