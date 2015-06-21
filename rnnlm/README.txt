@@ -4,7 +4,10 @@
 2. training :
    ./rnnlm -train data/train.txt -valid data/valid -rnnlm model/model_v1 -hidden 40 -rand-seed 1 -debug 2 -bptt 3 -class 200
 
-3. resoring :
+3. testing :
+   ./rnnlm -rnnlm model/model_v1 -test data/test
+
+3. rescoring :
    ./rnnlm -rnnlm model/model_v1 -test data/nbest_ex.txt -nbest -debug 0 > data/scores_ex.txt
 
 
