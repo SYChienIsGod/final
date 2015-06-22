@@ -15,3 +15,6 @@ History:
 
 1. model_v1 : train with train.txt, valid with valid, hidden 50, bptt 3, class 100  20150621 by HYTseng
               logP = -1417.764546, PPL 26.167639 on testing example test file provided by rnnlm
+
+2. model_v2 : train with train.txt, valid with valid, hidden 100, bptt 4, class 300, bptt block 10, RS 2 20150622 by HYTseng
+              logP = -1199.139929, PPL 15.817576 on testing example test file provided by rnnlm
