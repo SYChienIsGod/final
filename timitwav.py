@@ -8,10 +8,7 @@ Created on Thu Jun 18 12:43:57 2015
 import scipy.io.wavfile as wav
 import numpy as np
 import paths
-from features import mfcc
-from features import logfbank
 from features import fbank
-from features import ssc
 from features import framesig
 import util
 import speakersent
@@ -22,12 +19,10 @@ fbank_test_ids = np.loadtxt(paths.pathToFBANKTest,dtype='str_',delimiter=' ',use
 
 sswitr = speakersent.getSpeakerSentenceWordId(fbank_train_ids)
 sswite = speakersent.getSpeakerSentenceWordId(fbank_test_ids)
-#%%
 
-#speakerSets=speakersent.getSpeakerSets(fbank_train_ids)
-#sentGroupId,sentGroupCnt=speakersent.getSpeakerSentenceGroups(fbank_train_ids,speakerSets)
-#validationSet = speakersent.getValidationSet(fbank_train_ids,sentGroupId,sentGroupCnt)
-#trainingSet = set(sentGroupId).difference(validationSet)
+NFilterSegments = 40
+NDelta = 2
+
 #%%
 winlen = 0.025
 winstep = 0.01
@@ -52,17 +47,6 @@ def computeDelta(frames,N=2):
         for k in range(1,N+1):
             delta[i,:] += k*(-tmp_frames[i-k+N,:]+tmp_frames[i+k+N,:])/norm
     return delta            
-#%%
-    
-#speaker_='faem0'
-#sent_='si1392'
-#
-#r,sig = getWavFile(speaker_,sent_)
-#fbanks,energy= fbank(sig,r,winlen=winlen,winstep=winstep,nfilt=69)
-#delta=computeDelta(fbanks,N=1)
-#print fbanks[0]
-#print fbanks[1]
-#print delta[0]
             
 #%%
 def computeFBANKDeltaDelta(sswi,NFilt=40,NDelta=2):
@@ -89,7 +73,7 @@ def computeFBANKDeltaDelta(sswi,NFilt=40,NDelta=2):
     util.endprogress()
     return features
 
-trainingFeatures = computeFBANKDeltaDelta(sswitr)
+trainingFeatures = computeFBANKDeltaDelta(sswitr,NFilt=NFilterSegments,NDelta=NDelta)
 np.save('../data/fbank/train_delta2',trainingFeatures)
-testFeatures = computeFBANKDeltaDelta(sswite)
+testFeatures = computeFBANKDeltaDelta(sswite,NFilt=NFilterSegments,NDelta=NDelta)
 np.save('../data/fbank/test_delta2',testFeatures)
