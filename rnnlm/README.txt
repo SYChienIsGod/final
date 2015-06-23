@@ -11,8 +11,7 @@
    ./rnnlm -rnnlm model/model_v1 -test data/nbest_ex.txt -nbest -debug 0 > data/scores_ex.txt
 
 
-History:
-
+-------------------- RNNLM model --------------------
 1. model_v1 : train with train.txt, valid with valid, hidden 50, bptt 3, class 100  20150621 by HYTseng
               logP = -1417.764546, PPL 26.167639 on testing example test file provided by rnnlm
 
@@ -21,3 +20,13 @@ History:
 
 3. model_v3 : the same, hidden 70, bptt 3, class 300, bptt-block 5, rand-seed 2, 20150623 by HYTseng
               logP = 968.834569, PPL = 9.307533
+
+-------------------- SRILM model --------------------
+1. model_v1 : train with test.txt, order 3, -kndiscount -interpolate -gt3min 1 -gt4min 1
+
+
+
+-------------------- BLEND model --------------------
+1. Rmodel_v2
+
+2. Rmodel_v3*0.6, Smodel*0.4
