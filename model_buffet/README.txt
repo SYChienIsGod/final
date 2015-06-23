@@ -1,5 +1,6 @@
 1. Download trained model from MediaG
       >> scp -P 5566 mlds@140.112.20.167:caffe_model/515_PReLU_7413.tar .
+      passwore: 5566
       (There are some trained model in folder, download the model you like)      
       Model name example
       EX. 515_PReLU_5_741 
