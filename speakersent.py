@@ -37,7 +37,18 @@ import networkx as nx
 
 
 
-def getSpeakerSentenceGroups(ids):
+def getSpeakerSentenceGroups(ids,speakerSets):
+    speakerSentences = [(sentence.split('_')[0],sentence.split('_')[1]) for sentence in ids]        
+    sentenceGroupId = list()
+    sentenceGroupInst = [0] * len(speakerSets)
+    for speaker, sentence in speakerSentences:
+        for i in range(len(speakerSets)):
+            if speaker in speakerSets[i]:
+                sentenceGroupId.append(i)
+                sentenceGroupInst[i] += 1
+    return sentenceGroupId,sentenceGroupInst
+
+def getSpeakerSets(ids):
     speakerSentences = [(sentence.split('_')[0],sentence.split('_')[1]) for sentence in ids]
     G = nx.Graph()    
     for speaker, sentence in speakerSentences:
@@ -50,16 +61,22 @@ def getSpeakerSentenceGroups(ids):
             if elem[0] in ('f','m'):
                 speakerSet.append(elem)
         speakerSets.append(speakerSet)
-        
-    sentenceGroupId = list()
-    sentenceGroupInst = [0] * len(speakerSets)
-    for speaker, sentence in speakerSentences:
-        for i in range(len(speakerSets)):
-            if speaker in speakerSets[i]:
-                sentenceGroupId.append(i)
-                sentenceGroupInst[i] += 1
-    return sentenceGroupId,sentenceGroupInst
-            
+    return speakerSets
+    
+def getValidationSet(ids,sentGrId,sentGrCnt,seed=0):
+    rng = numpy.random.RandomState(0)
+    randomOrderSentIds = rng.permutation(list(set(sentGrId)))
+    
+    validationSetSize = 0
+    validationSet = list()
+    i = 0
+    while validationSetSize/float(len(sentGrId)) < 0.2:
+        validationSet.append(randomOrderSentIds[i])
+        validationSetSize += sentGrCnt[randomOrderSentIds[i]]
+        i+=1
+    return validationSet
+    
+
 #%% Save the information
             
 #f = file(paths.pathToSentenceGroupIds,'wb')
@@ -93,3 +110,9 @@ def getPhonemeIds(ph48c):
         phonemes[ph].append(i)
     return phonemes
     
+def countFrames(sswi):
+    cnt = 0
+    for v in sswi.itervalues():
+        for v2 in v.itervalues():            
+            cnt+=len(v2)
+    return cnt
