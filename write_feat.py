@@ -14,8 +14,40 @@ import write_lvldb
 
 NBefore = 5
 NAfter = 5
+# 0->FBANK, 1->MFCC, 2->IIF, 3->IIF2, 4->FBANKDelta2 (not active at the moment)
+featureSelection = 2
 
-DBPrefix = 'fbankD2_7-3'
+
+def getDataSplit(trainingPath, testPath, dimensions, trainingSelection, validationSelection):
+    train_features = np.loadtxt(trainingPath,dtype='float32',delimiter=' ',usecols=range(1,dimensions+1))
+    train_feature_ids = np.loadtxt(trainingPath,dtype='str_',delimiter=' ',usecols=(0,))
+    train_lab = np.loadtxt(paths.pathToLbl,dtype='str_',delimiter=',',usecols=(1,))
+    train_lab_ids = np.loadtxt(paths.pathToLbl,dtype='str_',delimiter=',',usecols=(0,))
+    train_labels = phonemes.trans_ph48(train_lab)
+    train_labels_sorted = np.zeros_like(train_labels)
+
+    if train_feature_ids.shape[0] > train_lab_ids.shape[0]:
+        incl=np.in1d(train_feature_ids,train_lab_ids)
+        train_feature_ids=train_feature_ids[incl]
+        train_features=train_features[incl,:]
+
+    oldLabels = dict(zip(train_lab_ids,train_labels))
+    for i in range(train_feature_ids.shape[0]):
+        train_labels_sorted[i]=oldLabels[train_feature_ids[i]]
+    
+    train_data = train_features[trainingSelection,:]
+    train_ids = train_feature_ids[trainingSelection]
+    train_labels = train_labels_sorted[trainingSelection]
+    
+    val_data = train_features[validationSelection,:]
+    val_ids = train_feature_ids[validationSelection]
+    val_labels = train_labels_sorted[validationSelection]
+    
+    test_data = np.loadtxt(testPath,dtype='float32',delimiter=' ',usecols=range(1,dimensions+1))
+    test_ids = np.loadtxt(testPath,dtype='str_',delimiter=' ',usecols=(0,))
+    test_labels = np.zeros(shape=(test_data.shape[0],),dtype='int_')
+    
+    return train_data,train_ids,train_labels,val_data,val_ids,val_labels,test_data,test_ids,test_labels
 
 #%% Validation & Training data
 
@@ -24,15 +56,6 @@ fbank_train_ids = np.loadtxt(paths.pathToFBANKTrain,dtype='str_',delimiter=' ',u
 
 speakerSets=speakersent.getSpeakerSets(fbank_train_ids)
 sentenceGroupId,sentenceGroupInst=speakersent.getSpeakerSentenceGroups(fbank_train_ids,speakerSets)
-#randomOrderSentIds = rng.permutation(list(set(sentenceGroupId)))
-
-#validationSetSize = 0
-#validationSet = list()
-#i = 0
-#while validationSetSize/float(len(sentenceGroupId)) < 0.2:
-#    validationSet.append(randomOrderSentIds[i])
-#    validationSetSize += sentenceGroupInst[randomOrderSentIds[i]]
-#    i+=1
 
 validationSet = speakersent.getValidationSet(fbank_train_ids,sentenceGroupId,sentenceGroupInst)
 
@@ -41,33 +64,50 @@ trainingSelection = validationSelection==0
 
 print 'Selected validation set: {}/{}'.format(np.count_nonzero(validationSelection),len(sentenceGroupId))
 
+#%%
+
+trainingPaths = (paths.pathToFBANKTrain,paths.pathToMFCCTrain,paths.toIIFTrain,paths.toIIF2Train)
+testPaths = (paths.pathToFBANKTest,paths.pathToMFCCTest,paths.toIIFTest,paths.toIIF2Test)
+dimensions = (69,39,55,60)
+
+trainingPath = trainingPaths[featureSelection]
+testPath=testPaths[featureSelection]
+dimension=dimensions[featureSelection]
+
 #%% Read FBANK Training Data
 
-fbank_train = np.loadtxt(paths.pathToFBANKTrain,dtype='float32',delimiter=' ',usecols=range(1,70))
-fbank_train_ids = np.loadtxt(paths.pathToFBANKTrain,dtype='str_',delimiter=' ',usecols=(0,))
-train_lab = np.loadtxt(paths.pathToLbl,dtype='str_',delimiter=',',usecols=(1,))
-train_lab_ids = np.loadtxt(paths.pathToLbl,dtype='str_',delimiter=',',usecols=(0,))
-train_labels = phonemes.trans_ph48(train_lab)
+train_data,train_ids,train_labels,val_data,val_ids,val_labels,test_data,test_ids,test_labels = \
+    getDataSplit(trainingPath,testPath, dimension, trainingSelection, validationSelection)
+print 'Data loaded.'
 
-train_labels_sorted = np.zeros_like(train_labels)
-
-oldLabels = dict(zip(train_lab_ids,train_labels))
-for i in range(fbank_train_ids.shape[0]):
-    train_labels_sorted[i]=oldLabels[fbank_train_ids[i]]
-
-train_data = fbank_train[trainingSelection,:]
-train_ids = fbank_train_ids[trainingSelection]
-train_labels = train_labels_sorted[trainingSelection]
-
-val_data = fbank_train[validationSelection,:]
-val_ids = fbank_train_ids[validationSelection]
-val_labels = train_labels_sorted[validationSelection]
-
-test_data = np.loadtxt(paths.pathToFBANKTest,dtype='float32',delimiter=' ',usecols=range(1,70))
-test_ids = np.loadtxt(paths.pathToFBANKTest,dtype='str_',delimiter=' ',usecols=(0,))
-test_labels = np.zeros(shape=(test_data.shape[0],),dtype='int_')
-
-print 'FBANK: Loaded training, validation and test data.'
+#%%
+#
+#fbank_train = np.loadtxt(paths.pathToFBANKTrain,dtype='float32',delimiter=' ',usecols=range(1,70))
+#fbank_train_ids = np.loadtxt(paths.pathToFBANKTrain,dtype='str_',delimiter=' ',usecols=(0,))
+#train_lab = np.loadtxt(paths.pathToLbl,dtype='str_',delimiter=',',usecols=(1,))
+#train_lab_ids = np.loadtxt(paths.pathToLbl,dtype='str_',delimiter=',',usecols=(0,))
+#
+#train_labels = phonemes.trans_ph48(train_lab)
+#
+#train_labels_sorted = np.zeros_like(train_labels)
+#
+#oldLabels = dict(zip(train_lab_ids,train_labels))
+#for i in range(fbank_train_ids.shape[0]):
+#    train_labels_sorted[i]=oldLabels[fbank_train_ids[i]]
+#
+#train_data_2 = fbank_train[trainingSelection,:]
+#train_ids_2 = fbank_train_ids[trainingSelection]
+#train_labels_2 = train_labels_sorted[trainingSelection]
+#
+#val_data_2 = fbank_train[validationSelection,:]
+#val_ids_2 = fbank_train_ids[validationSelection]
+#val_labels_2 = train_labels_sorted[validationSelection]
+#
+#test_data_2 = np.loadtxt(paths.pathToFBANKTest,dtype='float32',delimiter=' ',usecols=range(1,70))
+#test_ids_2 = np.loadtxt(paths.pathToFBANKTest,dtype='str_',delimiter=' ',usecols=(0,))
+#test_labels_2 = np.zeros(shape=(test_data.shape[0],),dtype='int_')
+#
+#print 'FBANK: Loaded training, validation and test data.'
 
 #%% Read FBANK Delta2 Training Data
 
@@ -122,6 +162,7 @@ print 'FBANK: Loaded training, validation and test data.'
 #test_data = np.loadtxt(paths.pathToMFCCTest,dtype='float32',delimiter=' ',usecols=range(1,40))
 #test_ids = np.loadtxt(paths.pathToMFCCTest,dtype='str_',delimiter=' ',usecols=(0,))
 #test_labels = np.zeros(shape=(test_data.shape[0],),dtype='int_')
+
 
 #%%
 

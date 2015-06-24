@@ -5,6 +5,8 @@ To run Caffe, execute `caffedata/basenet.sh`. It will first use `write_feat.py` 
 
 The data should be in a folder `..\data\` where you have extracted the files from the Kaggle website.
 
+The script `write_feat.py` can be edited to change the size of the feature vector (i.e. features of how many segments before and after the label giving segment are incorporated) and which features are used.
+
 ## Generating FBANK features
 
 To generate Filter Bank features (FBANK) ourselves, Python Speech Features (http://python-speech-features.readthedocs.org/) are used.
