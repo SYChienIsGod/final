@@ -32,5 +32,5 @@
 
 -------------------- BLEND model --------------------
 1. Rmodel_v2
-
-2. Rmodel_v3*0.6, Smodel*0.4
+2. Rmodel_v3*0.6, Smodel*0.4, score 7.57
+3. Rmodel_v3*0.3, Smodel*0.7, score 7.60
