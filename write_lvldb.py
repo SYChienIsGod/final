@@ -25,7 +25,7 @@ def writeData(data,labels,path,order=None):
         datum.label=labels[perm[i]]
         result = datum.SerializeToString()
         key = i
-        batch.Put(str(key),result)
+        batch.Put(str(key).zfill(6),result)
     db.Write(batch,sync=True)
     
 def writeConvData(data,labels,path,order=None):
@@ -44,5 +44,5 @@ def writeConvData(data,labels,path,order=None):
         datum.label=labels[perm[i]]
         result = datum.SerializeToString()
         key = i
-        batch.Put(str(key),result)
+        batch.Put(str(key).zfill(6),result) #zfill(6), use iterator to output data inorder
     db.Write(batch,sync=True)
