@@ -24,7 +24,9 @@
 -------------------- SRILM model --------------------
 1. model_v1 : train with test.txt, order 3, -kndiscount -interpolate -gt3min 1 -gt4min 1
 
+2. model_v2 : train with test.txt, order 5, the same
 
+3. model_v3 : train with train, order 3, the same
 
 -------------------- BLEND model --------------------
 1. Rmodel_v2
