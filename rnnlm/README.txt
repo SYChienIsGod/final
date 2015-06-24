@@ -21,6 +21,8 @@
 3. model_v3 : the same, hidden 70, bptt 3, class 300, bptt-block 5, rand-seed 2, 20150623 by HYTseng
               logP = 968.834569, PPL = 9.307533
 
+4. model_v4 : the same, hidden 90, bptt 5, class 330, bptt-block 5, rand-seed 3
+
 -------------------- SRILM model --------------------
 1. model_v1 : train with test.txt, order 3, -kndiscount -interpolate -gt3min 1 -gt4min 1
 
