@@ -16,7 +16,8 @@ NBefore = 3
 NAfter = 3
 # 0->FBANK, 1->MFCC, 2->IIF, 3->IIF2, 4->FBANKDelta2 (not active at the moment)
 featureSelection = 2
-
+# Switch for writing the data shaped in 2D for Conv Net Application
+writeConv = True
 
 def getDataSplit(trainingPath, testPath, dimensions, trainingSelection, validationSelection):
     train_features = np.loadtxt(trainingPath,dtype='float32',delimiter=' ',usecols=range(1,dimensions+1))
@@ -193,7 +194,14 @@ def arrangeData(data,ids,before,after):
                 wo_ = len(sswi[sp][se])
             arranged[i,(k+before)*w:(k+1+before)*w] = data[sswi[sp][se][wo_],:]
     return arranged
-    
+
+def arrangeConvData(data,ids,before,after):
+    arr = arrangeData(data,ids,before,after)
+    nfeat=arr.shape[1]/(before+after+1)
+    ntmp = before+after+1
+    ndata=arr.shape[0]
+    return np.reshape(arr,(ndata,ntmp,nfeat))
+
 #%%
 
 #phonemes2Id = speakersent.getPhonemeIds(train_labels)
@@ -228,7 +236,7 @@ trainDB = './caffedata/train.lvl'
 valDB   = './caffedata/val.lvl'
 testDB  = './caffedata/test.lvl'
 
-import shutil
+#import shutil
 
 #shutil.rmtree(trainDB)
 #shutil.rmtree(valDB)
@@ -237,9 +245,14 @@ import shutil
 #%% Write Data
 rng = np.random.RandomState(0)
 randomTrainingOrder = rng.permutation(np.arange(train_data_std.shape[0]))
-write_lvldb.writeData(arrangeData(train_data_std,train_ids,NBefore,NAfter),train_labels,trainDB,randomTrainingOrder)
-write_lvldb.writeData(arrangeData(val_data_std,val_ids,NBefore,NAfter),val_labels,valDB)
-write_lvldb.writeData(arrangeData(test_data_std,test_ids,NBefore,NAfter),test_labels,testDB)
+if writeConv:
+    write_lvldb.writeConvData(arrangeConvData(train_data_std,train_ids,NBefore,NAfter),train_labels,trainDB,randomTrainingOrder)
+    write_lvldb.writeConvData(arrangeConvData(val_data_std,val_ids,NBefore,NAfter),val_labels,valDB)
+    write_lvldb.writeConvData(arrangeConvData(test_data_std,test_ids,NBefore,NAfter),test_labels,testDB)
+else:
+    write_lvldb.writeData(arrangeData(train_data_std,train_ids,NBefore,NAfter),train_labels,trainDB,randomTrainingOrder)
+    write_lvldb.writeData(arrangeData(val_data_std,val_ids,NBefore,NAfter),val_labels,valDB)
+    write_lvldb.writeData(arrangeData(test_data_std,test_ids,NBefore,NAfter),test_labels,testDB)
 print 'Wrote data to databases.'
 
 #%%
