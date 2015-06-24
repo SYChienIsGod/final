@@ -19,12 +19,6 @@ toIIFTest = '../data/iif/iif_test.txt'
 toIIF2Train = '../data/iif/iif2_train.txt'
 toIIF2Test = '../data/iif/iif2_test.txt'
 
-toIIFTrainC = '../data/iif/iif_train_c.txt'
-toIIFTestC = '../data/iif/iif_test_c.txt'
-toIIF2TrainC = '../data/iif/iif2_train_c.txt'
-toIIF2TestC = '../data/iif/iif2_test_c.txt'
-
-
 pathToSaveFBANKTrain = '../data/fbank_train_features.save'
 pathToSave48Labels = '../data/fbank_mfcc_48labels.save'
 pathToSave39Labels = '../data/fbank_mfcc_39labels.save'

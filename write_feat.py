@@ -12,8 +12,8 @@ import phonemes
 import speakersent
 import write_lvldb
 
-NBefore = 5
-NAfter = 5
+NBefore = 3
+NAfter = 3
 # 0->FBANK, 1->MFCC, 2->IIF, 3->IIF2, 4->FBANKDelta2 (not active at the moment)
 featureSelection = 2
 
@@ -230,9 +230,9 @@ testDB  = './caffedata/test.lvl'
 
 import shutil
 
-shutil.rmtree(trainDB)
-shutil.rmtree(valDB)
-shutil.rmtree(testDB)
+#shutil.rmtree(trainDB)
+#shutil.rmtree(valDB)
+#shutil.rmtree(testDB)
 
 #%% Write Data
 rng = np.random.RandomState(0)
@@ -240,5 +240,22 @@ randomTrainingOrder = rng.permutation(np.arange(train_data_std.shape[0]))
 write_lvldb.writeData(arrangeData(train_data_std,train_ids,NBefore,NAfter),train_labels,trainDB,randomTrainingOrder)
 write_lvldb.writeData(arrangeData(val_data_std,val_ids,NBefore,NAfter),val_labels,valDB)
 write_lvldb.writeData(arrangeData(test_data_std,test_ids,NBefore,NAfter),test_labels,testDB)
-        
 print 'Wrote data to databases.'
+
+#%%
+with open('caffedata/train_ids.npy','w') as f:
+    np.save(f,train_ids)
+with open('caffedata/val_ids.npy','w') as f:
+    np.save(f,val_ids)
+with open('caffedata/test_ids.npy','w') as f:
+    np.save(f,test_ids)
+
+with open('caffedata/train_labels.npy','w') as f:
+    np.save(f,train_labels)
+with open('caffedata/val_labels.npy','w') as f:
+    np.save(f,val_labels)
+with open('caffedata/test_labels.npy','w') as f:
+    np.save(f,test_labels)
+    
+with open('caffedata/training_order.npy','w') as f:
+    np.save(f,randomTrainingOrder)

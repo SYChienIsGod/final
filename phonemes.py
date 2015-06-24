@@ -10,10 +10,12 @@ import numpy
 
 phonMapP='../data/conf/phones.60-48-39.map'
 
+# number to phoneme
 c60=dict()
 c48=dict()
 c39=dict()
 
+# phoneme to number
 ph60 = dict()
 ph48=dict()
 ph39=dict()

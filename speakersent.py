@@ -116,3 +116,9 @@ def countFrames(sswi):
         for v2 in v.itervalues():            
             cnt+=len(v2)
     return cnt
+
+def countSentences(sswi):
+    cnt = 0
+    for v in sswi.itervalues():
+        cnt+=len(v)
+    return cnt

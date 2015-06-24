@@ -27,4 +27,9 @@ def endprogress():
     sys.stdout.write("#" * 40 + "]\n")
     sys.stdout.flush()
     
+import numpy as np
+def loadNpy(f):
+    with open(f,'r') as fi:
+        return np.load(fi)
+    
     
