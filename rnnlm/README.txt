@@ -29,11 +29,11 @@
 
 -------------------- SRILM model --------------------
 1. model_v1 : train with test.txt, order 3, -kndiscount -interpolate -gt3min 1 -gt4min 1
-
+              logP = -20266, ppl = 290.852, ppl1 = 637.702
 2. model_v2 : train with test.txt, order 5, the same
-
+              logP = -20257, ppl = 290.179, ppl1 = 636.022
 3. model_v3 : train with train, order 3, the same
-
+              logP = -20557, ppl = 287.519, ppl1 = 620.411
 -------------------- BLEND model --------------------
 1. Rmodel_v2
 2. Rmodel_v3*0.6, Smodel*0.4, score 7.57
