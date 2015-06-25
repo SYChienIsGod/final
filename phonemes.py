@@ -8,7 +8,7 @@ Created on Fri Jun 12 13:13:22 2015
 import numpy
 
 
-phonMapP='../../data/conf/phones.60-48-39.map'
+phonMapP='../data/conf/phones.60-48-39.map'
 
 # number to phoneme
 c60=dict()
@@ -21,6 +21,7 @@ ph48=dict()
 ph39=dict()
 ph60_ph48=dict()
 ph60_ph39=dict()
+ph48_ph39=dict()
 
 
 with open(phonMapP) as f:
@@ -39,13 +40,18 @@ with open(phonMapP) as f:
                 ph39[data[2]] = len(ph39)
                 c39[ph39[data[2]]]=data[2]
             ph60_ph39[data[0]]=data[2]
+            ph48_ph39[data[1]]=data[2]
 
 def trans_ph60_ph48(d):
     if type(d) == list:
-        r = list()
         for w in d:
             r.append(trans_ph60_ph48(w))
         return r
+    elif type(d) == numpy.ndarray:
+        r = numpy.zeros(shape=(d.shape),dtype='|S5')
+        for i in range(d.size):
+            r[i]=trans_ph60_ph48(d[i])
+        return r 
     else:
         return ph60_ph48[d]
 
@@ -55,8 +61,27 @@ def trans_ph60_ph39(d):
         for w in d:
             r.append(trans_ph60_ph39(w))
         return r
+    elif type(d) == numpy.ndarray:
+        r = numpy.zeros(shape=(d.shape),dtype='|S5')
+        for i in range(d.size):
+            r[i]=trans_ph60_ph39(d[i])
+        return r 
     else:
         return ph60_ph39[d]
+
+def trans_ph48_ph39(d):
+    if type(d) == list:
+        r = list()
+        for w in d:
+            r.append(trans_ph48_ph39(w))
+        return r
+    elif type(d) == numpy.ndarray:
+        r = numpy.zeros(shape=(d.shape),dtype='|S5')
+        for i in range(d.size):
+            r[i]=trans_ph48_ph39(d[i])
+        return r  
+    else:
+        return ph48_ph39[d]
 
 def trans_ph48(d):
     if type(d) == list:

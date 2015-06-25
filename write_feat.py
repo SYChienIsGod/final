@@ -18,13 +18,19 @@ NAfter = 3
 featureSelection = 2
 # Switch for writing the data shaped in 2D for Conv Net Application
 writeConv = True
+# Switch for phone 39 or 48
+phone = 39
 
 def getDataSplit(trainingPath, testPath, dimensions, trainingSelection, validationSelection):
     train_features = np.loadtxt(trainingPath,dtype='float32',delimiter=' ',usecols=range(1,dimensions+1))
     train_feature_ids = np.loadtxt(trainingPath,dtype='str_',delimiter=' ',usecols=(0,))
     train_lab = np.loadtxt(paths.pathToLbl,dtype='str_',delimiter=',',usecols=(1,))
     train_lab_ids = np.loadtxt(paths.pathToLbl,dtype='str_',delimiter=',',usecols=(0,))
-    train_labels = phonemes.trans_ph48(train_lab)
+    if phone == 39:
+        train_labels1 = phonemes.trans_ph48_ph39(train_lab)
+        train_labels = phonemes.trans_ph39(train_labels1)
+    else : 
+        train_labels = phonemes.trans_ph48(train_lab)
     train_labels_sorted = np.zeros_like(train_labels)
 
     if train_feature_ids.shape[0] > train_lab_ids.shape[0]:
