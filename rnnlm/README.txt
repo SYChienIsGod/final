@@ -40,3 +40,4 @@
 1. Rmodel_v2
 2. Rmodel_v3*0.6, Smodel*0.4, score 7.57
 3. Rmodel_v3*0.3, Smodel*0.7, score 7.60
+4. phone_seq_v3(caffe_smooth), Rmodel_v3*0.6, Smodel_v3*0.4, score 7.71
