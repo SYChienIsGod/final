@@ -36,7 +36,7 @@ import phonemes
 timitDictC = dict()
 
 for k,v in timitDict.iteritems():
-    timitDictC[k]=phonemes.trans_ph48(phonemes.trans_ph60_ph48(v))
+    timitDictC[k]=phonemes.trans_ph39(phonemes.trans_ph60_ph39(v))
 
 def translateSentence(sent):
     if type(sent)==str:        
