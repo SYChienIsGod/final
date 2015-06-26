@@ -16,8 +16,8 @@ pathToMapStates = '../data/phones/state_48_39.map'
 
 toIIFTrain = '../data/iif/iif_train.txt'
 toIIFTest = '../data/iif/iif_test.txt'
-toIIF2Train = '../data/iif/iif2_train.txt'
-toIIF2Test = '../data/iif/iif2_test.txt'
+toIIF2Train = '../data/iif2/iif2_train.txt'
+toIIF2Test = '../data/iif2/iif2_test.txt'
 
 pathToSaveFBANKTrain = '../data/fbank_train_features.save'
 pathToSave48Labels = '../data/fbank_mfcc_48labels.save'
