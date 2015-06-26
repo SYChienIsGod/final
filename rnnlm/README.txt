@@ -27,6 +27,7 @@
 5. model_v5 : train/valid, hidden 90. bptt 5, class 400, bptt-block 5, rand-seed 7
               logP = -21682, PPL = 391.95
 
+6. model_v6 : train_debug/valid_debug, hidden 90, bptt 3, class 400, bptt-block 5, rand-seed 2
 -------------------- SRILM model --------------------
 1. model_v1 : train with test.txt, order 3, -kndiscount -interpolate -gt3min 1 -gt4min 1
               logP = -20266, ppl = 290.852, ppl1 = 637.702
@@ -36,8 +37,10 @@
               logP = -20557, ppl = 287.519, ppl1 = 620.411
 4. model_v4 : train with timit_train, order 3, the same
               logP = -18275.6, ppl = 294.901, ppl1 = 717.072
+5. model_v5 : train with train_debug, order 3, the same
 -------------------- BLEND model --------------------
 1. Rmodel_v2
 2. Rmodel_v3*0.6, Smodel*0.4, score 7.57
 3. Rmodel_v3*0.3, Smodel*0.7, score 7.60
 4. phone_seq_v3(caffe_smooth), Rmodel_v3*0.6, Smodel_v3*0.4, score 7.71
+5. phone_seq_v4(caffe + SSVM best 1), Rmodel_ve*0.6, Smodel_v3*0.4, score 6.67
