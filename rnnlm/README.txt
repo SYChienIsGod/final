@@ -38,6 +38,7 @@
 4. model_v4 : train with timit_train, order 3, the same
               logP = -18275.6, ppl = 294.901, ppl1 = 717.072
 5. model_v5 : train with train_debug, order 3, the same
+              logP = -20845.7, ppl = 311, ppl1 = 680.882
 -------------------- BLEND model --------------------
 1. Rmodel_v2
 2. Rmodel_v3*0.6, Smodel*0.4, score 7.57
