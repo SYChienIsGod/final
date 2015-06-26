@@ -44,6 +44,7 @@ with open(phonMapP) as f:
 
 def trans_ph60_ph48(d):
     if type(d) == list:
+        r = list()
         for w in d:
             r.append(trans_ph60_ph48(w))
         return r
