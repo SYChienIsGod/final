@@ -44,4 +44,5 @@
 2. Rmodel_v3*0.6, Smodel*0.4, score 7.57
 3. Rmodel_v3*0.3, Smodel*0.7, score 7.60
 4. phone_seq_v3(caffe_smooth), Rmodel_v3*0.6, Smodel_v3*0.4, score 7.71
-5. phone_seq_v4(caffe + SSVM best 1), Rmodel_ve*0.6, Smodel_v3*0.4, score 6.67
+5. phone_seq_v4(caffe + SSVM best 1), Rmodel_v3*0.6, Smodel_v3*0.4, score 6.67
+6. phone_seq_v4(caffe + SSVM best 1), Rmodel_v3*0.5, Smodel_v5*0.5
