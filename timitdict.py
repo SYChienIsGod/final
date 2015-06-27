@@ -13,7 +13,7 @@ timitDict = dict()
 
 with open(timitDictP) as f:
     for line in f:
-        data=line.split(' ')
+        data=line.strip().split(' ')
         if data[0]==';':
             continue
         tmp=list()
