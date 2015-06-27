@@ -48,3 +48,4 @@
 5. phone_seq_v4(caffe + SSVM best 1), Rmodel_v3*0.6, Smodel_v3*0.4, score 6.67
 6. phone_seq_v4(caffe + SSVM best 1), Rmodel_v3*0.5, Smodel_v5*0.5, score 6.68
 7. blend with 5(0.6) + 6(0.4), score 6.674
+8. phone_seq_v5(caffe + SSVM_v2), R_v3*0.6, S_v3*0.4
