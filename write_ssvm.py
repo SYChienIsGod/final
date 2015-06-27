@@ -26,10 +26,8 @@ import speakersent
 #fbank_train_ids = np.loadtxt(paths.pathToFBANKTrain,dtype='str_',delimiter=' ',usecols=(0,))
 
 netConfFile = './caffedata/basenet.prototxt'
-
-trainDB = './caffedata/train.lvl'
-valDB   = './caffedata/val.lvl'
-testDB  = './caffedata/test.lvl'
+pathToDB = '/media/jan/MLData/caffedata/'
+n_phonemes = 39
 
 def countEntries(dbfile):
     i = 0
@@ -51,10 +49,10 @@ confFiles=list()
 for source in ('train','val','test'):
     for i in range(len(netConf.layer)):
         if netConf.layer[i].name==u'data' and netConf.layer[i].include[0].phase==caffe.TEST:
-            netConf.layer[i].data_param.source = './caffedata/'+source+'.lvl'
+            netConf.layer[i].data_param.source = pathToDB+source+'.lvl'
             netConf.layer[i].data_param.batch_size = 1
         if netConf.layer[i].name==u'data' and netConf.layer[i].include[0].phase==caffe.TRAIN:
-            netConf.layer[i].data_param.source = './caffedata/'+source+'.lvl'
+            netConf.layer[i].data_param.source = pathToDB+source+'.lvl'
             netConf.layer[i].data_param.batch_size = 1
     fname = './caffedata/basenet_'+source+'.prototxt'
     with open(fname,'w') as f:
@@ -64,15 +62,16 @@ for source in ('train','val','test'):
 
 trainingPermutation = util.loadNpy('caffedata/training_order.npy')
 
-for source in ('val','train','test'):
-    N=countEntries('./caffedata/'+source+'.lvl')
+for source in ('train','val','test'):
+    N=countEntries(pathToDB+source+'.lvl')
     caffe.set_mode_gpu()
-    net=caffe.Net('./caffedata/basenet_'+source+'.prototxt', './caffedata/snapshot_iter_415800.caffemodel',caffe.TEST)
-    features=np.zeros(shape=(N,48),dtype='float32')
+    net=caffe.Net('./caffedata/basenet_'+source+'.prototxt', './caffedata/snapshot_iter_554400.caffemodel',caffe.TEST)
+    features=np.zeros(shape=(N,n_phonemes),dtype='float32')
     util.startprogress('Computing '+source)
     for i in range(N):
         net.forward()
-        features[i,:]=net.blobs['ip4'].data
+        features[i,:]=np.exp(net.blobs['ip4'].data)
+        features[i,:]=features[i,:]/np.sum(features[i,:])
         if i%1000==0:
             util.progress(float(i)/float(N)/2.0*100.0)
     if source=='train':
@@ -99,3 +98,4 @@ for source in ('val','train','test'):
         f.write('%i %i %i %i %i ' % (n_sent, sentId, n_frames, wo-1, labels[i]) + ' '.join([str(x_) for x_ in features[i,:]]) + '\n')        
     f.close()
     util.endprogress()
+    print '#Labels==Argmax: {}'.format(np.count_nonzero(features.argmax(axis=1)==labels))
