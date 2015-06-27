@@ -28,6 +28,7 @@
               logP = -21682, PPL = 391.95
 
 6. model_v6 : train_debug/valid_debug, hidden 90, bptt 3, class 400, bptt-block 5, rand-seed 2
+              logP = -21724, PPL = 397.42
 -------------------- SRILM model --------------------
 1. model_v1 : train with test.txt, order 3, -kndiscount -interpolate -gt3min 1 -gt4min 1
               logP = -20266, ppl = 290.852, ppl1 = 637.702
