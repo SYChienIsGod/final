@@ -25,10 +25,9 @@
 #include "svm_struct/svm_struct_common.h"
 #include "svm_struct_api.h"
 
-#define N_STATES 48
-#define N_FEATURES 48
+#define N_STATES 39
+#define N_FEATURES 39
 #define N_MAX_OBS 777
-#define N_BEST 10
 
 void        svm_struct_learn_api_init(int argc, char* argv[])
 {
@@ -229,7 +228,6 @@ LABEL       classify_struct_example(PATTERN x, STRUCTMODEL *sm,
 	double * tmp_flip;
 	int ** max_track = (int **) malloc(sizeof(int *)*x.N);
 
-	// Initialise the backtracking
 	for(int i = 0; i<x.N-1; i++) {
 		max_track[i] = (int *)malloc(sizeof(int)*N_STATES);
 	}
@@ -574,13 +572,10 @@ STRUCTMODEL read_struct_model(char *file, STRUCT_LEARN_PARM *sparm)
 void        write_label(FILE *fp, LABEL y)
 {
   /* Writes label y to file handle fp. */
-    for (int k = 0; k < y.K; k++) {
 	for(int i = 0; i < y.N; i++) {
-		//fprintf(fp,"%i ",y.seq[i]);
-            fprintf(fp,"%i ",y.kbest[k*y.N+i]);
+		fprintf(fp,"%i ",y.seq[i]);
 	}
 	fprintf(fp,"\n");
-    }
 }
 
 void        free_pattern(PATTERN x) {
