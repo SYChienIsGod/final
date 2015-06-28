@@ -53,3 +53,7 @@
 10 v4, timit01, R_v5*0.6, S_v5, score 6.80
 11 v4, timit02, R_v5*0.6, S_v5, score 6.86
 12 blend 9 10 11, score 6.92
+12_1 v4, timit001, R_v3, S_v3, 0.6, score 6.88
+13 v4, timit01, R_v3, S_v3, 0.6, score 6.68
+14 v4, timit02, R_v3, S_v3, 0.6, 6.74
+15 v4, timit, R_v3, 6.58
