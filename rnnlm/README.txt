@@ -57,3 +57,4 @@
 13 v4, timit01, R_v3, S_v3, 0.6, score 6.68
 14 v4, timit02, R_v3, S_v3, 0.6, 6.74
 15 v4, timit, R_v3, 6.58
+16 v4, timit01, R_v3, 6.579
