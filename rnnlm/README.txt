@@ -59,3 +59,7 @@
 15 v4, timit, R_v3, 6.58
 16 v4, timit01, R_v3, 6.579
 17 v5, timit, R_v3
+18 KNbest_v1, R_v3, 6.88
+19 v4, timit001, R_v3
+20 v4, timit02, R_v3
+21 blend 15 16 19 20
